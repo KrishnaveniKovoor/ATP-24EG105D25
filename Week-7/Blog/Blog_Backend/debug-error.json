@@ -1,0 +1,6 @@
+{
+  "name": "MongooseError",
+  "message": "Email already existed",
+  "type": "object",
+  "err": {}
+}
