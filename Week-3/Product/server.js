@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import exp from "express";
 import mongoose from "mongoose";
 import productApp from "./APIs/productAPI.js";
@@ -8,4 +9,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/productDB")
 
 app.use("/api", productApp);
 
+=======
+import exp from "express";
+import mongoose from "mongoose";
+import productApp from "./APIs/productAPI.js";
+const app = exp();
+app.use(exp.json());
+mongoose.connect("mongodb://127.0.0.1:27017/productDB")
+.then(()=>console.log("DB connected"));
+
+app.use("/api", productApp);
+
+>>>>>>> 555dabf37545356cc9042d7c760c20490f4df6ff
 app.listen(4000, () => console.log("Server running on port 4000"));
