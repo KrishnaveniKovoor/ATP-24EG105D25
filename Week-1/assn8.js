@@ -1,0 +1,19 @@
+<<<<<<< HEAD
+//4
+//Find the sum of marks in [90,78,65,98]
+let marks=[90,78,65,98];
+let sum=0;
+for(let i=0;i<marks.length;i++){
+sum+=marks[i];
+}
+console.log("the sum os marks is:",sum);
+=======
+//4
+//Find the sum of marks in [90,78,65,98]
+let marks=[90,78,65,98];
+let sum=0;
+for(let i=0;i<marks.length;i++){
+sum+=marks[i];
+}
+console.log("the sum os marks is:",sum);
+>>>>>>> 555dabf37545356cc9042d7c760c20490f4df6ff
