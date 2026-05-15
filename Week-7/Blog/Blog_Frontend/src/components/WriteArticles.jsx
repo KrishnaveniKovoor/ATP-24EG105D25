@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
-
 import {
   formCard,
   formTitle,
@@ -15,6 +14,8 @@ import {
   loadingClass,
 } from "../styles/common";
 import { useAuth } from "../store/authStore";
+import { API_URL } from "../config/api";
+
 
 function WriteArticles() {
   const navigate = useNavigate();
@@ -32,14 +33,14 @@ function WriteArticles() {
   const submitArticle = async (articleObj) => {
     setLoading(true);
 
-    //add authorId to articleObj
-    articleObj.author = currentUser._id;
+    // add authorId to articleObj
+    articleObj.author = currentUser.id ?? currentUser._id;
     try {
       //set loading true
       setLoading(true);
       //make POST req to save new article
       let res = await axios.post(
-        "http://localhost:4000/author-api/article",
+        `${API_URL}/author-api/article`,
         articleObj,
         { withCredentials: true },
       );
@@ -50,7 +51,10 @@ function WriteArticles() {
         // navigate("./author-profile/articles");
       }
     } catch (err) {
-      toast.error(err.response?.data?.error || "Failed to publish article");
+      toast.error(
+        err.response?.data?.message || err.response?.data?.error ||
+          "Failed to publish article",
+      );
     } finally {
       setLoading(false);
     }

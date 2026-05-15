@@ -1,6 +1,6 @@
 {
-  "name": "MongooseError",
-  "message": "Email already existed",
+  "name": "Error",
+  "message": "CORS: origin http://localhost:5175 not allowed",
   "type": "object",
   "err": {}
 }

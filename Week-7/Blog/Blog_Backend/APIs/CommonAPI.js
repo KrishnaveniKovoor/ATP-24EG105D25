@@ -110,17 +110,34 @@ commonApp.post("/login", async (req, res, next) => {
     },
     process.env.SECRET_KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "7d",
     },
   );
 
+  const origin = req.get('origin');
+  const isCrossOrigin = origin && (
+    origin.includes('vercel.app') || 
+    origin.includes('render.com') || 
+    origin !== `http://localhost:${process.env.PORT || 4000}`
+  );
+  const isProduction = process.env.NODE_ENV === 'production' || isCrossOrigin;
+  
+  console.log('Environment check:', {
+    NODE_ENV: process.env.NODE_ENV,
+    RENDER: process.env.RENDER,
+    origin,
+    isCrossOrigin,
+    isProduction
+  });
+  
   res.cookie("token", signedToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   });
   let userObj = user.toObject();
   delete userObj.password;
+  userObj.id = userObj._id;
 
   res.status(200).json({ message: "login success", payload: userObj });
 });
@@ -128,10 +145,26 @@ commonApp.post("/login", async (req, res, next) => {
 //Route for Logout
 commonApp.get("/logout", (req, res) => {
   //delete token from cookie storage
+  const origin = req.get('origin');
+  const isCrossOrigin = origin && (
+    origin.includes('vercel.app') || 
+    origin.includes('render.com') || 
+    origin !== `http://localhost:${process.env.PORT || 4000}`
+  );
+  const isProduction = process.env.NODE_ENV === 'production' || isCrossOrigin;
+  
+  console.log('Logout environment check:', {
+    NODE_ENV: process.env.NODE_ENV,
+    RENDER: process.env.RENDER,
+    origin,
+    isCrossOrigin,
+    isProduction
+  });
+  
   res.clearCookie("token", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   });
   //send res
   res.status(200).json({ message: "Logout success" });
@@ -142,25 +175,38 @@ commonApp.get(
   "/check-auth",
   async (req, res) => {
     try {
+      console.log('Check-auth request:', {
+        cookies: req.cookies,
+        hasToken: !!req.cookies?.token,
+        origin: req.get('origin'),
+        NODE_ENV: process.env.NODE_ENV,
+        RENDER: process.env.RENDER
+      });
+
       const token = req.cookies?.token;
       if (!token) {
+        console.log('No token found in cookies');
         return res.status(200).json({ isAuthenticated: false });
       }
 
       const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-      const dbUser = await UserModel.findById(decodedToken.id).select(
-        "role isUserActive",
-      );
+      const dbUser = await UserModel.findById(decodedToken.id).select("-password");
       if (!dbUser || !dbUser.isUserActive) {
+        console.log('User not found or inactive:', decodedToken.id);
         return res.status(200).json({ isAuthenticated: false });
       }
 
+      let userObj = dbUser.toObject();
+      userObj.id = userObj._id;
+
+      console.log('User authenticated successfully:', userObj.email);
       res.status(200).json({
         isAuthenticated: true,
         message: "authenticated",
-        payload: decodedToken,
+        payload: userObj,
       });
     } catch (err) {
+      console.log('Check-auth error:', err.message);
       res.status(200).json({ isAuthenticated: false });
     }
   },

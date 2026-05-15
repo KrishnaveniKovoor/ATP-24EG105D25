@@ -25,8 +25,12 @@ function Login() {
   } = useForm();
 
   const navigate = useNavigate();
-  //get state from auth store
-  const { login, currentUser, loading, error, isAuthenticated } = useAuth((state) => state);
+  //get state from auth store - use individual selectors to prevent unnecessary re-renders
+  const login = useAuth((state) => state.login);
+  const currentUser = useAuth((state) => state.currentUser);
+  const loading = useAuth((state) => state.loading);
+  const error = useAuth((state) => state.error);
+  const isAuthenticated = useAuth((state) => state.isAuthenticated);
   //on user login
   const onUserLogin = (userCredObj) => {
     //call login() of auth store
@@ -35,22 +39,28 @@ function Login() {
 
   useEffect(() => {
     //navigation logic
-    if (isAuthenticated === true) {
+    console.log("[Login] Auth state changed:", { isAuthenticated, currentUser, loading });
+    
+    if (isAuthenticated === true && currentUser) {
+      console.log("[Login] User authenticated, redirecting...");
+      
       if (currentUser.role === "USER") {
-        //show cuccess toast
+        console.log("[Login] Redirecting USER to /user-profile");
         toast.success("Login success and redirecting to User Profile",{duration:2000})
         navigate("/user-profile");
       }
-      if (currentUser.role === "AUTHOR") {
-         toast.success("Login success and redirecting to Author Profile",{duration:2000})
+      else if (currentUser.role === "AUTHOR") {
+        console.log("[Login] Redirecting AUTHOR to /author-profile");
+        toast.success("Login success and redirecting to Author Profile",{duration:2000})
         navigate("/author-profile");
       }
-      if (currentUser.role === "ADMIN") {
-         toast.success("Login success and redirecting to Admin Profile",{duration:2000})
+      else if (currentUser.role === "ADMIN") {
+        console.log("[Login] Redirecting ADMIN to /admin-profile");
+        toast.success("Login success and redirecting to Admin Profile",{duration:2000})
         navigate("/admin-profile");
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentUser, navigate]);
 
   //deal with loading
   if (loading) {
@@ -69,14 +79,18 @@ function Login() {
         <form onSubmit={handleSubmit(onUserLogin)}>
           {/* Email */}
           <div className={formGroup}>
-            <label className={labelClass}>Email</label>
+            <label htmlFor="email" className={labelClass}>
+              Email
+            </label>
             <input
+              id="email"
+              name="email"
               type="email"
               placeholder="you@example.com"
+              autoComplete="email"
               className={inputClass}
               {...register("email", {
                 required: "Email is required",
-
                 validate: (value) => value.trim().length > 0 || "Email cannot be empty",
               })}
             />
@@ -85,10 +99,15 @@ function Login() {
 
           {/* Password */}
           <div className={formGroup}>
-            <label className={labelClass}>Password</label>
+            <label htmlFor="password" className={labelClass}>
+              Password
+            </label>
             <input
+              id="password"
+              name="password"
               type="password"
               placeholder="••••••••"
+              autoComplete="current-password"
               className={inputClass}
               {...register("password", {
                 required: "Password is required",

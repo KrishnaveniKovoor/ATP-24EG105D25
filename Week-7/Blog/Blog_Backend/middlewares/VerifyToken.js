@@ -1,57 +1,75 @@
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import { UserModel } from "../models/UserModel.js";
+
 const { verify } = jwt;
+
 config();
 
 export const verifyToken = (...allowedRoles) => {
   return async (req, res, next) => {
     try {
+      // get token from cookies
       const token = req.cookies?.token;
+
+      console.log("token from cookies:", token);
+
+      // if token missing
       if (!token) {
-        return res.status(401).json({ message: "Please login first" });
+        return res.status(401).json({
+          message: "Please login first",
+        });
       }
 
-      const decodedToken = verify(token, process.env.SECRET_KEY);
-      if (!allowedRoles.includes(decodedToken.role)) {
-        return res.status(403).json({ message: "You are not authorized" });
-      }
-
-      const dbUser = await UserModel.findById(decodedToken.id).select(
-        "role isUserActive",
+      // verify token
+      const decodedToken = verify(
+        token,
+        process.env.SECRET_KEY
       );
-      if (!dbUser) {
-        return res.status(401).json({ message: "User not found" });
-      }
-      if (!dbUser.isUserActive) {
-        return res.status(403).json({ message: "Your account is blocked" });
+
+      console.log("decoded token:", decodedToken);
+      console.log("allowed roles:", allowedRoles);
+
+      // role check
+      if (!allowedRoles.includes(decodedToken.role)) {
+        console.log("role mismatch");
+        
+        return res.status(403).json({
+          message: "You are not authorized",
+        });
       }
 
+      // find user in DB
+      const dbUser = await UserModel.findById(
+        decodedToken.id
+      ).select("role isUserActive");
+
+      console.log("db user:", dbUser);
+
+      // if user not found
+      if (!dbUser) {
+        return res.status(401).json({
+          message: "User not found",
+        });
+      }
+
+      // if blocked
+      if (!dbUser.isUserActive) {
+        return res.status(403).json({
+          message: "Your account is blocked",
+        });
+      }
+
+      // attach user
       req.user = decodedToken;
+
       next();
     } catch (err) {
-      res.status(401).json({ message: "Invalid token" });
+      console.log("verify token error:", err);
+
+      res.status(401).json({
+        message: "Invalid token",
+      });
     }
   };
 };
-
-// export const verifyToken = async (req, res, next) => {
-//   try {
-//     //get token from cookie
-//     const token = req.cookies?.token; // { token : asdasd}
-//     //check token existed or not
-//     if (!token) {
-//       return res.status(401).json({ message: "Please login first" });
-//     }
-//     //validate token(decode the token)
-//     let decodedToken = verify(token, process.env.SECRET_KEY);
-
-//     // check the role is same as role in decodedToken
-
-//     //add decoded token
-//     res.user = decodedToken;
-//     next();
-//   } catch (err) {
-//     res.status(401).json({ message: "Invalid token" });
-//   }
-// };

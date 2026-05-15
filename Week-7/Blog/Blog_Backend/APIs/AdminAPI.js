@@ -7,7 +7,7 @@ export const adminApp = exp.Router();
 // Get all managed accounts (users and authors)
 adminApp.get("/users", verifyToken("ADMIN"), async (req, res, next) => {
   try {
-    const users = await UserModel.find({ role: { $in: ["USER", "AUTHOR"] } })
+    const users = await UserModel.find({ role: { $in: ["USER", "AUTHOR","ADMIN"] } })
       .select("-password")
       .sort({ createdAt: -1 });
 
