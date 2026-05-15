@@ -1,46 +1,123 @@
 # Week 2: JavaScript Array Methods and Object-Oriented Programming
 
+## Overview
+This week covers JavaScript Array Methods and Object-Oriented Programming concepts with practical implementations using real-world scenarios.
+
 ## Topics Covered
-- Array Methods: filter(), map(), reduce(), find(), findIndex()
+- Array Methods: `filter()`, `map()`, `reduce()`, `find()`, `findIndex()`
 - Classes and Objects in JavaScript
 - Object-Oriented Programming Concepts
 - Data Manipulation with Arrays and Objects
 - CRUD Operations on Arrays
 - Method Implementation in Classes
-
 ## Files and Descriptions
 
-- `Assgn1.js`
-  - Employee data manipulation: inserts a new employee at the 2nd position, removes an employee by name, and updates marks for a specific employee.
+### Array Methods Applications
 
-- `Assgn2.js`
-  - Library Book Management System: Implements a Book class with methods for borrowing, returning, getting information, and checking if it's a long book.
+- **`bankTransaction.js`**
+  - Bank transaction analysis using array methods
+  - Filters credit transactions
+  - Extracts transaction amounts using `map()`
+  - Calculates account balance using `reduce()`
+  - Finds first debit transaction
+  - Locates specific transactions
 
-- `bank.js`
-  - Bank transaction analysis: Uses array methods to filter credit transactions, extract amounts, calculate balance, find first debit, and locate transaction by amount.
+- **`employeePayroll.js`**
+  - Employee data processing and payroll management
+  - Filters employees by department using `filter()`
+  - Calculates net salary (salary + 10%) using `map()`
+  - Computes total salary payout using `reduce()`
+  - Finds employees by salary criteria
+  - Locates employees by name using `findIndex()`
 
-- `books.js`
-  - Book class implementation: Creates Book objects with borrow/return functionality and displays book information.
+- **`movieRecommendation.js`**
+  - Movie recommendation system
+  - Filters movies by genre (Sci-Fi, Drama, Action)
+  - Maps movies to formatted title with rating display
+  - Calculates average movie rating using `reduce()`
+  - Finds specific movies by title
+  - Locates movie positions in array
 
-- `cart.js`
-  - Shopping cart management: Filters in-stock products, calculates total prices, computes grand total, finds specific items, and locates item positions.
+- **`shoppingCart.js`**
+  - E-commerce shopping cart management
+  - Filters in-stock products using `filter()`
+  - Creates product array with names and total prices using `map()`
+  - Computes grand total cart value using `reduce()`
+  - Finds specific items like "Mouse"
+  - Locates product positions using `findIndex()`
 
-- `employee.js`
-  - Employee data processing: Filters employees by department, adds net salary calculations, computes total salary payout, finds employees by salary, and locates employees by name.
+- **`studentPerformance.js`**
+  - Student performance dashboard and analysis
+  - Filters passing students (marks ≥ 40)
+  - Assigns grades based on marks (A: ≥90, B: ≥75, C: ≥60, D: else)
+  - Calculates average marks using `reduce()`
+  - Finds students by specific scores
+  - Locates students by name
 
-- `movie.js`
-  - Movie database operations: Filters movies by genre, formats titles with ratings, calculates average rating, finds specific movies, and locates movie positions.
+### Object-Oriented Programming
 
-- `performance.js`
-  - Student performance analysis: Filters passing students, assigns grades based on marks, calculates average marks, finds students by score, and locates students by name.
+- **`booksDetails.js`**
+  - Book class implementation
+  - Properties: title, author, pages, availability status
+  - Methods:
+    - `borrowBook()` - Mark book as borrowed
+    - `returnBook()` - Mark book as returned
+    - `displayInfo()` - Display book information
+
+- **`LibraryBookManagement.js`**
+  - Library Book Management System
+  - Complete Book class with constructor
+  - Properties:
+    - title (string)
+    - author (string)
+    - pages (number)
+    - isAvailable (boolean, default: true)
+  - Methods:
+    - `borrow()` - Borrow a book
+    - `returnBook()` - Return a book
+    - `getInformation()` - Get book details
+
+## Directory Structure
+
+```
+Week-2/
+├── bankTransaction.js
+├── booksDetails.js
+├── employeePayroll.js
+├── LibraryBookManagement.js
+├── movieRecommendation.js
+├── shoppingCart.js
+├── studentPerformance.js
+├── E_Commerce/          (Sub-project)
+├── Task_Management/     (Sub-project)
+└── README.md
+```
 
 ## How to Run
 
-Use Node.js to execute the JavaScript files:
+Execute the JavaScript files using Node.js:
 
 ```bash
-node Assgn1.js
-node Assgn2.js
-node bank.js
-# etc.
+# Array Methods Examples
+node bankTransaction.js
+node employeePayroll.js
+node movieRecommendation.js
+node shoppingCart.js
+node studentPerformance.js
+
+# Object-Oriented Programming
+node booksDetails.js
+node LibraryBookManagement.js
 ```
+
+## Learning Outcomes
+
+After completing this week, you should be able to:
+
+✅ Use array methods (`filter()`, `map()`, `reduce()`, `find()`, `findIndex()`)  
+✅ Apply these methods to real-world problem scenarios  
+✅ Create and use classes in JavaScript  
+✅ Implement methods within classes  
+✅ Manipulate data structures efficiently  
+✅ Solve complex problems using functional programming concepts  
+✅ Build object-oriented solutions for data management
