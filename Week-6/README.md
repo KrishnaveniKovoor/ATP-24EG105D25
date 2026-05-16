@@ -216,16 +216,6 @@ By completing Week 6 projects, you will:
 
 ---
 
-## 🔗 Useful Resources
-
-- [MERN Stack Documentation](https://www.mongodb.com/mern-stack)
-- [Express.js Guide](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Vite Guide](https://vitejs.dev/)
-
----
-
 ## ✅ Checklist
 
 - [ ] MongoDB account/connection configured
@@ -239,4 +229,4 @@ By completing Week 6 projects, you will:
 
 ---
 
-**Happy coding! 🎉**
+
