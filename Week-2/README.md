@@ -135,7 +135,7 @@ node updateUserObjectQ3.js
 
 ## Learning Outcomes
 
-By completing Week 2, you will be able to:
+
 
 - Apply array helper methods to solve data-processing tasks
 - Use rest/spread syntax to clone and extend arrays/objects
