@@ -5,5 +5,4 @@ function Articles() {
     <div>Articles</div>
   )
 }
-
 export default Articles
