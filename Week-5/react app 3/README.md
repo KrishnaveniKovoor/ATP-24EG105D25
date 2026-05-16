@@ -22,5 +22,3 @@ Footer
 base url + /path url
 No upper case letters in url
 / - empty path
-
-

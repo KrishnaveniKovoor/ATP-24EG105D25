@@ -8,3 +8,4 @@ function App() {
 export default App;
 SPA - Single page applcn
 Multi page applcn
+
